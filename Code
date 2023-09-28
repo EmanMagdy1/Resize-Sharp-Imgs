@@ -1,0 +1,61 @@
+import cv2
+import numpy as np
+from matplotlib import pyplot as plt
+----------------------------------------------------------------------------------------
+img=cv2.imread('unb.jpg', cv2.IMREAD_UNCHANGED)  #Cv2.imread(“filename”, flags=)
+imgRGB=cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+plt.imshow(imgRGB)
+plt.title("Woman - original image")
+plt.axis('off')  # Remove axis labels
+plt.show()
+----------------------------------------------------------------------------------------
+sharpen_filter=np.array(([[0, -1, 0], [-1, 5, -1], [0, -1, 0]]))
+# applying kernels to the input image to get the sharpened image
+sharp_image=cv2.filter2D(imgRGB,-1,sharpen_filter)
+plt.imshow(sharp_image)
+plt.axis('off')  # Remove axis labels
+plt.show()
+print("Sharpened Image")
+----------------------------------------------------------------------------------------
+#different kenerl values for sharpening 
+import numpy as np
+sharpen_filter=np.array(([[-0.9, -1.1, -0.9], [-1.12, 9.1, -1.12], [-0.9, -1, -1]]))
+# applying kernels to the input image to get the sharpened image
+sharp_image2=cv2.filter2D(imgRGB,-1,sharpen_filter)
+plt.imshow(sharp_image2)
+plt.axis('off')  # Remove axis labels
+plt.show()
+print("Sharpened Image")
+----------------------------------------------------------------------------------------
+img.shape
+----------------------------------------------------------------------------------------
+#197 num of rows(height) , 204(columns=width) & 3 number of color channels
+#manual Resizing
+plt.imshow(cv2.resize(cv2.cvtColor(img, cv2.COLOR_BGR2RGB),(180,215)))
+plt.axis('off')  # Remove axis labels
+plt.show()
+print("Resized Image")
+----------------------------------------------------------------------------------------
+#Trackbar resizing :
+def empty(a):
+    pass
+cv2.namedWindow('TrackBar')
+cv2.resizeWindow('TrackBar',400,100) #resize the window (name, width, height)
+#create the trackBar for the width: width, trackbar name, size values from ..to .. 
+cv2.createTrackbar('Width', 'TrackBar',5,600, empty)
+#for the height:
+cv2.createTrackbar('Height', 'TrackBar',5,500, empty)
+
+#loop to run this over and over to be able to resize the image 
+while True:
+    #get our trackbar positions
+    width=cv2.getTrackbarPos('Width', 'TrackBar')
+    height=cv2.getTrackbarPos('Height', 'TrackBar')
+    image=cv2.resize(img,(width,height))
+    cv2.imshow('image', image)
+    k=cv2.waitKey(1)  & 0xFF 
+    if k==27: #if the pressed key is esc key break the loop 
+        break   
+cv2.destroyAllWindows() #destroy all windows created
+
+----------------------------------------------------------------------------------------
